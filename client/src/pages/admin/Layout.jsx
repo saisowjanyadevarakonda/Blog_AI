@@ -17,7 +17,7 @@ const Layout = () => {
     <div className='flex h-[calc(100vh-70px)]'>
         <Sidebar />
         
-        {/* <Outlet /> */}
+        <Outlet />
     </div>
     </>
   )
