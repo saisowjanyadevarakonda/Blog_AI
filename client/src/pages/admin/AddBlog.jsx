@@ -4,10 +4,11 @@
     import Theme from 'quill/core/theme';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
-
+import {parse} from 'marked'
     const AddBlog = () => {
         const {axios} = useAppContext();
         const [isAdding,setIsAdding] = useState(false);
+        const [loading,setLoading] = useState(false);
         
         const editorRef = useRef(null)
         const quillRef = useRef(null)
@@ -37,6 +38,8 @@ import toast from 'react-hot-toast';
             setImage(false);
             setTitle('');
             setSubTitle('');
+            setIsPublished(false);
+            setCategory('startup');
             quillRef.current.root.innerHTML = '';
             setCategory('Startup');
            }
@@ -51,7 +54,22 @@ import toast from 'react-hot-toast';
          }
         }
         const generateContent = async() => {
-
+          if(!title) return toast.error('please enter the title');
+          try {
+            setLoading(true);
+            const {data} = await axios.post('/api/blog/generate' , {prompt:title});
+            if(data.success){
+                quillRef.current.root.innerHTML = parse(data.content)
+            }
+            else{
+                toast.error(data.message);
+            }
+          } catch (error) {
+            toast.error(error.message);
+          }
+          finally{
+            setLoading(false);
+          }
         }
 
         useEffect(()=>{    
@@ -79,7 +97,16 @@ import toast from 'react-hot-toast';
         <p className='mt-4'>Blog Description</p>
         <div className='max-w-lg h-72 pb-16 sm:pb-10 pt-2 relative mb-4'>
         <div ref={editorRef} ></div>
-        <button onClick={generateContent} type='button' className='absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer' >Generate with Ai</button>
+
+        {loading && (
+            <div className='absolute right-0 top-0 bottom-0 left-0 flex items-center justify-center bg-black/10 mt-2'>
+                <div className='w-8 h-8 rounded-full border-2 border-t-white animate-spin'>
+
+                </div>
+                
+             </div>)}
+
+        <button disabled ={loading} onClick={generateContent} type='button' className='absolute bottom-1 right-2 ml-2 text-xs text-white bg-black/70 px-4 py-1.5 rounded hover:underline cursor-pointer' >Generate with Ai</button>
     </div>
 
 

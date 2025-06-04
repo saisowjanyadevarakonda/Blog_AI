@@ -116,7 +116,7 @@ export const getBlogComments = async(req,res) => {
 export const generateContent = async(req, res) => {
     try {
         const {prompt} = req.body;
-        await main(prompt + 'Generate a blog content on this topic in simple text format');
+       const content =  await main(prompt + 'Generate a blog content on this topic in simple text format');
         res.json({success:true,content});
 
     } catch (error) {
