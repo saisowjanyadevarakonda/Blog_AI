@@ -11,9 +11,9 @@
 }
 
 @theme {
-  --color-primary: #5044E5;
+  --color-primary: #833AB4;
 }
-
+/* #5044E5 */
 .rich-text { font-size: 15px;  }
 
 .rich-text p { margin-bottom: 16px; color: #292929; }
