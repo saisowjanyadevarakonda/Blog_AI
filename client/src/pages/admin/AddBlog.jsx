@@ -2,8 +2,12 @@
     import { assets, blogCategories } from '../../assets/assets'
     import Quill from 'quill';
     import Theme from 'quill/core/theme';
+import { useAppContext } from '../../context/AppContext';
+import toast from 'react-hot-toast';
 
     const AddBlog = () => {
+        const {axios} = useAppContext();
+        const [isAdding,setIsAdding] = useState(false);
         
         const editorRef = useRef(null)
         const quillRef = useRef(null)
@@ -15,7 +19,36 @@
         const [isPublished,setIsPublished] = useState(false);
     
         const onSubmitHandler = async (e) => {
-            e.preventDefault();
+         try {
+           e.preventDefault();
+           setIsAdding(true)
+           
+           const blog = {
+            title,subTitle,
+            description: quillRef.current.root.innerHTML,
+            category,isPublished
+           }
+           const formData = new FormData();
+           formData.append('blog',JSON.stringify(blog));
+           formData.append('image',image);
+           const {data} = await axios.post('/api/blog/add', formData);
+           if(data.success){
+            toast.success(data.message);
+            setImage(false);
+            setTitle('');
+            setSubTitle('');
+            quillRef.current.root.innerHTML = '';
+            setCategory('Startup');
+           }
+           else{
+            toast.error('data.message');
+           }
+         } catch (error) {
+            toast.error(error.message);
+         }            
+         finally{
+            setIsAdding(false);
+         }
         }
         const generateContent = async() => {
 
@@ -61,7 +94,9 @@
     <p>Publish Now</p>
     <input type='checkbox' checked={isPublished} className='scale-125 cursor-pointer' onChange={e => setIsPublished(e.target.checked)} />
 </div>
-<button type='submit' className='mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm'>Add Blog</button>
+<button disabled={isAdding} type='submit' className='mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm'>
+    {isAdding? 'Adding....':'Add Blog'}
+</button>
             </div>
         </form>
     )
