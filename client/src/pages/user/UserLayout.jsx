@@ -5,11 +5,8 @@ import { useAppContext } from '../../context/AppContext'
 
 const UserSidebar = ({ navigate }) => (
   <div className='w-64 bg-white border-r border-gray-200 flex flex-col py-8 px-4'>
-    <button className='mb-4 text-left font-semibold text-gray-700 hover:text-primary' onClick={() => navigate('/user')}>
-      Dashboard
-    </button>
     
-    <button className='mb-4 text-left font-semibold text-gray-700 hover:text-primary' onClick={() => navigate('/user/profile')}>
+    <button className='mb-4 text-left font-semibold text-gray-700 hover:text-primary' onClick={() => navigate('/user')}>
       Profile
     </button>
     <button className='mb-4 text-left font-semibold text-gray-700 hover:text-primary' onClick={() => navigate('/user/subscription')}>

@@ -19,10 +19,10 @@ import UserComments from './pages/user/UserComments.jsx'
 
   const App = () => {
     const {token} = useAppContext();
-  console.log("token in app : ", token);
+  // console.log("token in app : ", token);
   const adminToken = localStorage.getItem('token');
   const userToken = localStorage.getItem('uToken');
-  console.log("user: " , userToken)
+  // console.log("user: " , userToken)
     return ( 
       <div>
         <Toaster />
@@ -30,8 +30,8 @@ import UserComments from './pages/user/UserComments.jsx'
           <Route path='/' element= {<Home />} />
           <Route path='/blog/:id' element={<Blog />} />
           <Route path = '/user' element = {userToken ? <UserLayout/> : <Login />} >
-            <Route index element={<UserDashboard />} />
-            <Route path='profile' element={<UserProfile />} />
+            {/* <Route index element={<UserDashboard />} /> */}
+            <Route index element={<UserProfile />} />
             <Route path='subscription' element={<SubscriptionPage />} />
             <Route path='comments' element={<UserComments />} />
           </Route>

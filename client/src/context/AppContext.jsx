@@ -32,7 +32,7 @@ export const AppProvider  = ({children}) => {
      useEffect(() => {
       fetchBlogs() ;
       const token = localStorage.getItem('token');
-      console.log('Loaded token: ' , token);
+      // console.log('Loaded token: ' , token);
         setToken(token);
       if(token){
       
