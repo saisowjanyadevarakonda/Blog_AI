@@ -1,17 +1,64 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
+import { useCallback } from 'react';
 
 const SubscriptionPage = () => {
-  const { axios } = useAppContext();
-  const [user, setUser] = useState(null);
+  const { axios,user,setUser } = useAppContext();
+  // const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+//  console.log('userid ' , user._id);
+// console.log(user._id)
   // Get token from localStorage
   const token = localStorage.getItem('uToken');
+  // console.log("user token in sub page: ",token);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
+const initpay = (order) => {
+  const options = {
+    key:import.meta.env.VITE_RAZORPAY_KEY_ID,
+    amount:order.amount,
+    currency:order.currency,
+    name:'Subscription Payment',
+    description:'Subscription Payment',
+    order_id:order.id,
+    receipt:order.receipt,  
+    handler:async(response) => {
+      console.log(response)
+      try {
+        const {data} = await axios.post('/api/user/verify-razorpay',response,{headers:{Authorization:`Bearer ${token}`}});
+        if(data.success){
+          console.log("payment successfull you have subscriptioned");
+          fetchProfile()
+          setUser(data.userData);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error(error.message);
+      }
+    }
+  };
+   const rzp = new window.Razorpay(options);
+  rzp.open();
+};
+
+
+
+   const payRazorpay = async() => {
+        try {
+          const {data} = await axios.post('/api/user/payment-razorpay',{},{headers: {Authorization : `Bearer ${token}`}});
+          if(data.success){
+            initpay(data.order);
+
+          }
+          else{
+            console.log('2')
+            console.log(data.order);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+   }
+    const fetchProfile = useCallback(  async () => {
       try {
         setLoading(true);
         const { data } = await axios.get('/api/user/get-profile', {
@@ -27,9 +74,12 @@ const SubscriptionPage = () => {
       } finally {
         setLoading(false);
       }
-    };
+    },[axios.token]);
+
+  useEffect(() => {
+   
     fetchProfile();
-  }, [axios, token]);
+  }, [fetchProfile]);
 
   if (loading) {
     return (
@@ -108,7 +158,7 @@ const SubscriptionPage = () => {
             Hi, <span className="font-semibold">{user.name}</span>.<br />
             Subscribe now to unlock all premium blogs and features!
           </p>
-          <button className="px-8 py-3 bg-red-500 text-white rounded-full font-semibold shadow-lg hover:bg-red-600 transition-all">
+          <button onClick={() => payRazorpay()} className="px-8 py-3 bg-red-500 text-white rounded-full font-semibold shadow-lg hover:bg-red-600 transition-all">
             Subscribe Now
           </button>
         </div>

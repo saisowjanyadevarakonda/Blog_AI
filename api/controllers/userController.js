@@ -2,7 +2,7 @@ import bcrypt from 'bcryptjs'
 import userModel from '../models/user.model.js';
 import jwt from 'jsonwebtoken'
 import Comment from '../models/Comment.js';
-
+import razorpay from 'razorpay'
 
 export const registerUser = async(req,res) =>{
     try {
@@ -67,4 +67,53 @@ export const getComments = async(req,res) => {
     } catch (error) {
         res.json({success:false,message:error.message});
     }
+}
+
+const razorpayInstance = new razorpay({
+    key_id:process.env.RAZORPAY_KEY_ID,
+    key_secret:process.env.RAZORPAY_KEY_SECRET
+})
+
+export  const paymentRazorpay = async(req,res) => {
+    try {
+        const userId = req.userId;
+        if(!userId){
+            return res.json({success:false,message:"user not found"});
+        }
+        const options = {
+            amount: 4900,
+            currency :process.env.CURRENCY,
+            receipt: userId,
+        }
+        try {
+            const order = await razorpayInstance.orders.create(options);
+            console.log('razorpay order created', order);
+            res.json({success:true,order});
+        } catch (error) {
+            console.log("razorpay error: ",error);
+            res.json({success:false,message:error.message});
+        }
+    } catch (error) {
+        console.log(error);
+        res.json({success:false,message:error.message});
+    }
+}
+
+export const verifyRazorpay = async (req,res) => {
+try {
+    const {razorpay_order_id} = req.body;
+    const orderInfo = await razorpayInstance.orders.fetch(razorpay_order_id);
+    if(orderInfo.status === 'paid'){
+       const subscriptionDurationDays  = 30;
+       const expiryDate =  new Date();
+       expiryDate.setDate(expiryDate.getDate() + subscriptionDurationDays);
+       
+
+        await userModel.findByIdAndUpdate(orderInfo.receipt,{isSubscribed:true,subscriptionExpiry:expiryDate});
+        res.json({success:true,message:"payment Successfull"});
+    }
+} catch (error) {
+    console.log(error);
+    res.json({success:false,message:error.message});
+}
 }

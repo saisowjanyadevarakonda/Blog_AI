@@ -71,7 +71,7 @@ export const AppProvider  = ({children}) => {
         // console.log('loaded user token' , uToken);
         setUToken(uToken);
         if(uToken){
-          // axios.defaults.headers.common['Authorization'] = `${uToken}`;
+          axios.defaults.headers.common['Authorization'] = `${uToken}`;
           fetchUserProfile(uToken);
         }
         else{

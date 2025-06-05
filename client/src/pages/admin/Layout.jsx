@@ -6,13 +6,14 @@ import { useAppContext } from '../../context/AppContext'
 
 const Layout = () => {
 
-    const {axios,setToken,navigate} = useAppContext();
+    const {axios,setToken,navigate,setUToken} = useAppContext();
     const logout = () => {
       localStorage.removeItem('token');
       localStorage.removeItem('utoken');
       axios.defaults.headers.common['Authorization'] = null;
       setToken(null);
-      window.location.reload();
+      setUToken(null)
+      // window.location.reload();
       navigate('/');
     }
   return (
