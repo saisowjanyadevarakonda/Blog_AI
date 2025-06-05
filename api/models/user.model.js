@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     role:{type:String,enum:['user','admin'],default:'user'},
     blogs:[{type:mongoose.Schema.Types.ObjectId, ref:'blog'}],
     isSubscribed:{type:Boolean, default:false},
-    subscriptionExpiry:{type:Boolean , default:null},
+    subscriptionExpiry:{type:Date , default:null},
     
 },{timestamps:true})
 

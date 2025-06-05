@@ -3,16 +3,17 @@ import imageKit from '../configs/imageKit.js';
 import Blog from '../models/Blog.js';
 import Comment from '../models/Comment.js';
 import main from '../configs/gemini.js';
+import userModel from '../models/user.model.js';
 
 export const addBlog = async(req,res) => {
     try { 
         // console.log(req.body);
-        const {title,subTitle,description,category, isPublished} = JSON.parse(req.body.blog);
+        const {title,subTitle,description,category, isPublished ,visibility} = JSON.parse(req.body.blog);
         const imageFile = req.file;
    
         // check if all fields are present 
-        if(!title || !description || !category || !imageFile ){
-            return res.json({success:true,message:"missing required fields"});
+        if(!title || !description || !category || !imageFile || !visibility ){
+            return res.json({success:false,message:"missing required fields"});
         }
 
 
@@ -26,17 +27,18 @@ export const addBlog = async(req,res) => {
         const optimizedImageUrl = imageKit.url({
             path:response.filePath,
             transformation: [
-                {quality:'auot'},//auto compression
+                {quality:'auto'},//auto compression
                 {format:'webp'},// convert to modern format
                 {width:'1280'} // width resizing
             ]
         })
 
         const image = optimizedImageUrl;
-        await Blog.create({title,subTitle,description,category,image,isPublished})
+        await Blog.create({title,subTitle,description,category,image,isPublished,visibility})
         res.json({success:true,message:"blog addedd successfully"});
 
     } catch (error) {
+        // console.log('hi from catch')
         res.json({success:false,message:error.message});
     }
 }
@@ -95,8 +97,20 @@ export const togglePublish = async (req,res) => {
 
 export const addComment = async(req, res) => {
     try {
-       const {blog, name, content} = req.body;
-        await Comment.create({blog,name,content});
+       const {blog,  content} = req.body;
+       const userId = req.userId;
+       const user = await userModel.findById(userId);
+       if(!user){
+        return res.json({success:false, message:"user not found"});
+        
+       }
+       await Comment.create({
+        blog,
+        user:userId,
+        name:user.name,
+        content
+       });
+
         res.json({success:true,message:"comment added for review to admin"});
     } catch (error) {
         res.json({success:false,message:error.message})
@@ -106,7 +120,7 @@ export const addComment = async(req, res) => {
 export const getBlogComments = async(req,res) => {
     try {
         const {blogId} = req.body;
-        const comments = await Comment.find({blog:blogId,isApproved:true}).sort({createdAt: -1});
+        const comments = await Comment.find({blog:blogId,isApproved:true}).sort({createdAt: -1}).populate('user','name');
         res.json({success:true,comments})
     } catch (error) {
         res.json({success:false,message:error.message});

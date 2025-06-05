@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs'
 import userModel from '../models/user.model.js';
 import jwt from 'jsonwebtoken'
+import Comment from '../models/Comment.js';
 
 
 export const registerUser = async(req,res) =>{
@@ -53,6 +54,16 @@ export const getProfile = async(req,res) => {
         const userId = req.userId;
         const userData = await userModel.findById(userId).select('-password');
         res.json({success:true,userData});
+    } catch (error) {
+        res.json({success:false,message:error.message});
+    }
+}
+
+export const getComments = async(req,res) => {
+    try {
+        const userId = req.userId;
+        const comments = await Comment.find({user:userId}).populate('blog','title');
+        res.json({success:true,comments});
     } catch (error) {
         res.json({success:false,message:error.message});
     }
