@@ -5,6 +5,10 @@ import cors from 'cors'
 import connectDB from './configs/db.js';
 import adminRouter from './routes/adminRoutes.js';
 import blogRouter from './routes/blogRoutes.js';
+import userRouter from './routes/userRoutes.js';
+process.removeAllListeners('warning');
+
+
 
 const app = express();
 await connectDB();
@@ -19,7 +23,7 @@ app.use(express.json());
 app.get('/',(req,res) => res.send("Api is working")) 
 app.use('/api/admin',adminRouter);
 app.use('/api/blog',blogRouter);
-
+app.use('/api/user',userRouter)
 
 
 

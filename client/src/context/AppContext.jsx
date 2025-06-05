@@ -32,8 +32,10 @@ export const AppProvider  = ({children}) => {
      useEffect(() => {
       fetchBlogs() ;
       const token = localStorage.getItem('token');
-      if(token){
+      console.log('Loaded token: ' , token);
         setToken(token);
+      if(token){
+      
         axios.defaults.headers.common['Authorization'] = `${token}`;
       }
      },[])

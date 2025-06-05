@@ -9,8 +9,10 @@ const Layout = () => {
     const {axios,setToken,navigate} = useAppContext();
     const logout = () => {
       localStorage.removeItem('token');
+      localStorage.removeItem('utoken');
       axios.defaults.headers.common['Authorization'] = null;
       setToken(null);
+      window.location.reload();
       navigate('/');
     }
   return (
