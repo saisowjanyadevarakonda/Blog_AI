@@ -26,7 +26,7 @@ A modern, feature-rich blogging platform with user and admin roles, subscription
 - **Payments:** Razorpay
 - **Image Hosting:** ImageKit
 - **Authentication:** JWT (user & admin roles)
-- **Deployment:** (Optional) Vercel, Heroku, Netlify, Render, etc.
+- **Deployment:**  Vercel 
 
 ---
 
