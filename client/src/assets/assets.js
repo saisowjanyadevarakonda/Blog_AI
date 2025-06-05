@@ -32,7 +32,7 @@ import dashboard_icon_2 from './dashboard_icon_2.svg'
 import dashboard_icon_3 from './dashboard_icon_3.svg'
 import dashboard_icon_4 from './dashboard_icon_4.svg'
 import lock_icon from './lock_icon.png'
-
+import unlock_icon from './unlock_icon.svg'
 export const assets = {
     facebook_icon,
     googleplus_icon,

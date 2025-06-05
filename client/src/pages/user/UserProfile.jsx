@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { useAppContext } from '../../context/AppContext';
 import { assets } from '../../assets/assets';
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import toast from 'react-hot-toast';
 
 const UserProfile = () => {
-  const { axios } = useAppContext();
-  const [user, setUser] = useState(null);
+  const { axios, setUser, setUToken, navigate } = useAppContext();
+  const [user, setUserLocal] = useState(null);
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
-    const token =localStorage.getItem('uToken');
+    const token = localStorage.getItem('uToken');
     if (!token) return;
     const { id } = jwtDecode(token);
 
     const fetchProfile = async () => {
       try {
-          // console.log('hi')
         const { data } = await axios.get('/api/user/get-profile', {
           headers: { Authorization: `Bearer ${token}` }
         });
-      
+
         if (data.success) {
-          setUser(data.userData);
+          setUserLocal(data.userData);
           setBlogs(data.userData.blogs || []);
         } else {
-          console.log('api error: ', data.message);
           toast.error(data.message);
         }
       } catch (error) {
@@ -35,6 +33,15 @@ const UserProfile = () => {
 
     fetchProfile();
   }, [axios]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('uToken');
+    localStorage.removeItem('token');
+    setUser(null);
+    setUToken(null);
+    toast.success('Logged out successfully.');
+    navigate('/');
+  };
 
   if (!user) {
     return (
@@ -63,6 +70,13 @@ const UserProfile = () => {
           </p>
         </div>
       </div>
+
+      <button
+        onClick={handleLogout}
+        className="mb-8 px-6 py-2 bg-primary text-white rounded-full font-semibold shadow hover:bg-primary/90 transition"
+      >
+        Logout
+      </button>
 
       <div className="mb-8">
         <h3 className="text-lg font-semibold mb-2 text-gray-700">Subscription Status</h3>

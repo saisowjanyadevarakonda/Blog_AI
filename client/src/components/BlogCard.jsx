@@ -1,18 +1,59 @@
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { assets } from '../assets/assets';
+import { useAppContext } from '../context/AppContext';
+import toast from 'react-hot-toast';
 
-const BlogCard = ({blog}) => {
 
-    const {title, description,category,image, _id} = blog;
+const BlogCard = ({ blog }) => {
+  const { title, description, category, image, _id, visibility } = blog;
   const navigate = useNavigate();
+  const {user} = useAppContext();
+  // console.log(user)
+  // console.log(user.isSubscribed);
+  const token = localStorage.getItem('token');
+  const uToken = localStorage.getItem('uToken');
+  const isSubscribed = user?.isSubscribed && (!user.subscriptionExpiry || new Date(user.subscriptionExpiry) > new Date());
+  
+  const handleClick = () => {
+    if(visibility === 'private' && !token  ){
+      if(!user || !isSubscribed){
+        toast.error('you must subscribe to view this blog');
+        return;
+      }
+    }
+    navigate(`/blog/${_id}`);
+  }
+
   return (
-    <div onClick={() => navigate(`/blog/${_id}`)} className='w-full rounded-lg overflow-hidden shadow hover:scale-102 hover:shadow-primary/25 duration-300 cursor-pointer '>
-     <img src={image} alt='' className='aspect-video' />
-     <span className='ml-5 mt-4 px-3 py-1 inline-block bg-primary/20 rounded-full text-primary text-xs'>{category}</span>
-     <div className='p-5'>
+    <div
+      onClick={handleClick }
+      className='w-full rounded-lg overflow-hidden shadow hover:scale-102 hover:shadow-primary/25 duration-300 cursor-pointer relative'
+    >
+      <img src={image} alt='' className='aspect-video' />
+      
+      {/* Flex row: category left, lock icon right */}
+      <div className="flex items-center justify-between px-5 mt-4">
+        <span className='px-3 py-1 inline-block bg-primary/20 rounded-full text-primary text-xs'>
+          {category}
+        </span>
+        {visibility === 'private' && (
+          <img
+            src={assets.lock_icon}
+            alt='private'
+            className='w-6 h-6 z-10'
+            title='Private blog'
+          />
+        )}
+      </div>
+      
+      <div className='p-5'>
         <h5 className='mb-2 font-medium text-gray-900'>{title}</h5>
-        <p className='mb-3 text-xs text-gray-600' dangerouslySetInnerHTML={{"__html": description.slice(0,80)}}></p>
-     </div>
+        <p
+          className='mb-3 text-xs text-gray-600'
+          dangerouslySetInnerHTML={{ "__html": description.slice(0, 80) }}
+        ></p>
+      </div>
     </div>
   )
 }

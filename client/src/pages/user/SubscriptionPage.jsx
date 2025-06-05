@@ -108,7 +108,7 @@ const SubscriptionPage = () => {
             Hi, <span className="font-semibold">{user.name}</span>.<br />
             Subscribe now to unlock all premium blogs and features!
           </p>
-          <button className="px-8 py-3 bg-green-500 text-white rounded-full font-semibold shadow-lg hover:bg-green-600 transition-all">
+          <button className="px-8 py-3 bg-red-500 text-white rounded-full font-semibold shadow-lg hover:bg-red-600 transition-all">
             Subscribe Now
           </button>
         </div>

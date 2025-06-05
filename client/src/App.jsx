@@ -18,30 +18,28 @@ import SubscriptionPage from './pages/user/SubscriptionPage.jsx'
 import UserComments from './pages/user/UserComments.jsx'
 
   const App = () => {
-    const {token} = useAppContext();
-  // console.log("token in app : ", token);
-  const adminToken = localStorage.getItem('token');
-  const userToken = localStorage.getItem('uToken');
-  // console.log("user: " , userToken)
+    const {token,uToken} = useAppContext();
+
     return ( 
       <div>
         <Toaster />
         <Routes>
           <Route path='/' element= {<Home />} />
           <Route path='/blog/:id' element={<Blog />} />
-          <Route path = '/user' element = {userToken ? <UserLayout/> : <Login />} >
+          <Route path = '/user' element = {uToken? <UserLayout/> : <Login />} >
             {/* <Route index element={<UserDashboard />} /> */}
             <Route index element={<UserProfile />} />
             <Route path='subscription' element={<SubscriptionPage />} />
             <Route path='comments' element={<UserComments />} />
           </Route>
        
-          <Route path='/admin' element ={ adminToken ?  <Layout/> : <Login />} >
+          <Route path='/admin' element ={ token ?  <Layout/> : <Login />} >
           <Route index element={<Dashboard />} />
           <Route path='addBlog' element = {<AddBlog />} />
         <Route path='listBlog' element={<ListBlog />} />
         <Route path='comments' element={<Comments />} />
           </Route>
+          <Route path='/login' element={<Login />} />
         </Routes>
       </div>
     )

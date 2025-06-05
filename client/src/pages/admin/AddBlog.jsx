@@ -18,7 +18,9 @@ import {parse} from 'marked'
         const [subTitle,setSubTitle] = useState('');
         const [category,setCategory] = useState('startup');
         const [isPublished,setIsPublished] = useState(false);
-    
+        const [visibility,setVisibility] = useState('public');
+
+
         const onSubmitHandler = async (e) => {
          try {
            e.preventDefault();
@@ -27,7 +29,8 @@ import {parse} from 'marked'
            const blog = {
             title,subTitle,
             description: quillRef.current.root.innerHTML,
-            category,isPublished
+            category,isPublished,
+            visibility
            }
            const formData = new FormData();
            formData.append('blog',JSON.stringify(blog));
@@ -42,9 +45,10 @@ import {parse} from 'marked'
             setCategory('startup');
             quillRef.current.root.innerHTML = '';
             setCategory('Startup');
+            setVisibility('public');
            }
            else{
-            toast.error('data.message');
+            toast.error(data.message);
            }
          } catch (error) {
             toast.error(error.message);
@@ -121,12 +125,19 @@ import {parse} from 'marked'
     <p>Publish Now</p>
     <input type='checkbox' checked={isPublished} className='scale-125 cursor-pointer' onChange={e => setIsPublished(e.target.checked)} />
 </div>
+<p className='mt-4 '>Add visibility</p>
+<select onChange={e => setVisibility(e.target.value)} value={visibility} name='visibility' className='mt-2 px-3 py-2 border text-gray-500 border-gray-300 outline-none rounded' >
+    <option value="public">Public</option>
+    <option value="private">Private</option>
+</select>
+<br />
 <button disabled={isAdding} type='submit' className='mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm'>
     {isAdding? 'Adding....':'Add Blog'}
 </button>
+
             </div>
         </form>
-    )
+    );
     }
 
-    export default AddBlog
+export default AddBlog
