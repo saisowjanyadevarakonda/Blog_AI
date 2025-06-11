@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets';
 import { useAppContext } from '../context/AppContext';
@@ -24,6 +24,13 @@ const BlogCard = ({ blog }) => {
     }
     navigate(`/blog/${_id}`);
   }
+  const [lock,setLock] = useState(true);
+  
+  useEffect(() => {
+     if(user && isSubscribed){
+      setLock(false);
+     }
+  },[user]);
 
   return (
     <div
@@ -37,7 +44,7 @@ const BlogCard = ({ blog }) => {
         <span className='px-3 py-1 inline-block bg-primary/20 rounded-full text-primary text-xs'>
           {category}
         </span>
-        {visibility === 'private' &&!user &&  !isSubscribed  && (
+        {visibility === 'private' && lock && (
           <img
             src={assets.lock_icon}
             alt='private'
@@ -46,7 +53,7 @@ const BlogCard = ({ blog }) => {
           />
         )}
         {
-          visibility === 'private' && user &&  isSubscribed && (
+          visibility === 'private' && !lock  && (
             <img
             src={assets.unlock_icon}
             alt='publicForSubs'
@@ -54,7 +61,9 @@ const BlogCard = ({ blog }) => {
             
             />
           )
-        }
+        } 
+         
+        
 
       </div>
       
