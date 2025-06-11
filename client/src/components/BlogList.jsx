@@ -1,4 +1,4 @@
-  import React, { useState } from 'react'
+  import React, { useEffect, useState } from 'react'
   import { blog_data, blogCategories } from '../assets/assets.js'
   import { motion } from "motion/react"
   import BlogCard from './BlogCard';
@@ -8,13 +8,29 @@
   
     const [menu,setMenu] = useState("All");
     const {blogs,input} = useAppContext();
-  
+    
 
   const filteredBlogs = () => {
     if(input === ''){
       return blogs;
     }
     return blogs.filter((blog) => blog.title.toLowerCase().includes(input.toLowerCase()) || blog.category.toLowerCase().includes(input.toLowerCase()));
+  }
+
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    if(blogs && blogs.length > 0){
+      setLoading(false);
+    }
+  },[blogs]);
+
+  if(loading){
+
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        <p className='text-green-600 font-semibold text-xl'>Please wait Blog cards are loading...</p>
+      </div>
+    );
   }
 
     return (

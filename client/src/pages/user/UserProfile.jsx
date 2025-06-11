@@ -76,7 +76,7 @@ const UserProfile = () => {
         className="mb-8 px-6 py-2 bg-primary text-white rounded-full font-semibold shadow hover:bg-primary/90 transition"
       >
         Logout
-      </button>
+      </button> 
 
       <div className="mb-8">
         <h3 className="text-lg font-semibold mb-2 text-gray-700">Subscription Status</h3>
