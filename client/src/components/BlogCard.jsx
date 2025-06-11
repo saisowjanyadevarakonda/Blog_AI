@@ -37,7 +37,7 @@ const BlogCard = ({ blog }) => {
         <span className='px-3 py-1 inline-block bg-primary/20 rounded-full text-primary text-xs'>
           {category}
         </span>
-        {visibility === 'private' && (
+        {visibility === 'private' &&!user &&  !isSubscribed  && (
           <img
             src={assets.lock_icon}
             alt='private'
@@ -45,6 +45,17 @@ const BlogCard = ({ blog }) => {
             title='Private blog'
           />
         )}
+        {
+          visibility === 'private' && user &&  isSubscribed && (
+            <img
+            src={assets.unlock_icon}
+            alt='publicForSubs'
+            className='w-6 h-6 z-10'
+            
+            />
+          )
+        }
+
       </div>
       
       <div className='p-5'>

@@ -5,8 +5,8 @@ import { jwtDecode } from "jwt-decode";
 import toast from 'react-hot-toast';
 
 const UserProfile = () => {
-  const { axios, setUser, setUToken, navigate } = useAppContext();
-  const [user, setUserLocal] = useState(null);
+  const { axios, setUser, setUToken, navigate,user } = useAppContext();
+  const [useer, setUserLocal] = useState(null);
   const [blogs, setBlogs] = useState([]);
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const UserProfile = () => {
 
         if (data.success) {
           setUserLocal(data.userData);
+          setUser(data.userData);
           setBlogs(data.userData.blogs || []);
         } else {
           toast.error(data.message);
