@@ -1,4 +1,4 @@
-# Blogidity - Full-Stack Blogging Platform
+# Blogidity - An AI-powered Full-Stack Blogging Platform
 
 A modern, feature-rich blogging platform with user and admin roles, subscription payments (Razorpay), and a clean, responsive UI.
 
