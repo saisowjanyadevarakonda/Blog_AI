@@ -8,7 +8,7 @@ const Footer = () => {
        
         <div>
             <img src={assets.logo} alt="logo" className='w-32 sm:w-44'/>
-            <p className='max-w-[410px] mt-6'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores pariatur aut amet debitis molestiae. Molestiae, amet aliquam numquam enim non culpa consectetur quam eum sint distinctio. Ad doloremque odio dolor?</p> 
+            <p className='max-w-[410px] mt-6'>Blogidity is a modern, user-friendly blogging platform designed to help writers and readers connect through powerful content. Create, publish, and manage insightful blog posts with ease, while enjoying a clean interface, secure authentication, and dynamic interactions — all powered by modern web technologies.</p> 
         </div>
        <div className='flex flex-wrap justify-between w-full md:w-[45%] gap-5'>
         {footer_data.map((section,index)=>(
@@ -27,7 +27,7 @@ const Footer = () => {
 
         </div>
         <p className='py-4 text-center text-sm md:text-base text-gray-500/80'>
-            Copyright 2025 Blog app all rights reserved.
+           © 2025 Blogidity. All rights reserved.
         </p>
 
     </div>
