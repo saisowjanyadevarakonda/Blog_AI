@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAppContext } from '../../context/AppContext';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const { axios, setToken, setUToken } = useAppContext()
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('temporary@gmail.com');
+  const [password, setPassword] = useState('BlogidityPassword@1');
   const [isAdmin, setIsAdmin] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -55,6 +55,18 @@ const Login = () => {
       toast.error(error.message);
     }
   }
+useEffect(() => {
+  if (isRegister) {
+    setEmail('');
+    setPassword('');
+  } else if (isAdmin) {
+    setEmail('admin@example.com');
+    setPassword('greatstack');
+  } else {
+    setEmail('temporary@gmail.com');
+    setPassword('BlogidityPassword@1');
+  }
+}, [isAdmin, isRegister]);
 
   return (
     <div className='flex items-center justify-center h-screen'>

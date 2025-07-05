@@ -10,7 +10,9 @@ const CommentTableItem = ({comment,fetchComments}) => {
 const {axios} = useAppContext();
 
 const approveComment = async() => {
-   try {
+  try {
+    toast.error('you can not approve comment in view mode only');
+    return;
       const {data} = await axios.post('/api/admin/approve-comment',{id:_id})
       if(data.success){
          toast.success(data.message);
@@ -25,7 +27,9 @@ const approveComment = async() => {
 }
 
 const deleteComment = async() => {
-   try {
+  try {
+    toast.error('You can not delete comment in view mode only');
+    return;
       const confirm = window.confirm("Are you sure you want to delete this message");
       if(!confirm)return;
       const {data} = await axios.post('/api/admin/delete-comment',{id:_id});

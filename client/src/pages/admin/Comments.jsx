@@ -27,7 +27,9 @@ const Comments = () => {
         <div className='flex justify-between items-center max-w-3xl'>
             <h1 >Comments</h1>
             <div className='flex gap-4'>
-                <button onClick={() => setFilter('Approved')} className={`shadow-customr-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter === 'Approved' ? 'text-primary' : 'text-gray-700'}`}>Approved</button>
+          <button
+            onClick={() => setFilter('Approved')}
+            className={`shadow-customr-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter === 'Approved' ? 'text-primary' : 'text-gray-700'}`}>Approved</button>
 
                 <button onClick={() => {setFilter('Not Approved')}} className={`shadow-customr-sm border rounded-full px-4 py-1 cursor-pointer text-xs ${filter === 'Not Approved' ? 'text-primary' : 'text-gray-700'}`}>Not Approved</button>
 

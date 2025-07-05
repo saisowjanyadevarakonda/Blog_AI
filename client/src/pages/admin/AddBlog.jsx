@@ -22,7 +22,9 @@ import {parse} from 'marked'
 
 
         const onSubmitHandler = async (e) => {
-         try {
+          try {
+            toast.error('You can not post this Blog in view Mode only');
+            return;
            e.preventDefault();
            setIsAdding(true)
            

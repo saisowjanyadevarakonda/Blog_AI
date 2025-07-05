@@ -8,7 +8,9 @@ const BlogTableItem = ({blog,fetchBlogs,index}) => {
     const BlogDate = new Date(createdAt);
 
     const {axios} = useAppContext();
-    const deleteBlog = async() => {
+  const deleteBlog = async () => {
+    toast.error('You can not delete this blog at this time');
+    return;
       const confirm = window.confirm('Arye you sure you want delete this blog');
       if(!confirm) return;
       try {
@@ -27,7 +29,9 @@ const BlogTableItem = ({blog,fetchBlogs,index}) => {
     }
 
 const togglePublish = async() => {
- try { 
+  try { 
+    toast.error('You can not toggle this function at this time'); 
+    return;
   const {data} = await axios.post('/api/blog/toggle-publish',{id:blog._id});
   if(data.success){
     toast.success(data.message);
