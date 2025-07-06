@@ -119,7 +119,7 @@ const isLoggedIn = !!token
  </form>
  {!isLoggedIn && (
   <div className="text-red-500 mb-4">
-    Please log in to add a comment.
+    Please log in as a user to add a comment.
   </div>
 )}
   </div>
