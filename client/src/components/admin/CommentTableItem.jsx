@@ -11,7 +11,7 @@ const {axios} = useAppContext();
 
 const approveComment = async() => {
   try {
-    toast.error('you can not approve comment in view mode only');
+    toast.error('🔒 View Mode Enabled — Actions are disabled for safety & demo purposes.');
     return;
       const {data} = await axios.post('/api/admin/approve-comment',{id:_id})
       if(data.success){
@@ -28,7 +28,7 @@ const approveComment = async() => {
 
 const deleteComment = async() => {
   try {
-    toast.error('You can not delete comment in view mode only');
+    toast.error('🔒 View Mode Enabled — Actions are disabled for safety & demo purposes.');
     return;
       const confirm = window.confirm("Are you sure you want to delete this message");
       if(!confirm)return;

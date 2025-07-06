@@ -9,7 +9,7 @@ const BlogTableItem = ({blog,fetchBlogs,index}) => {
 
     const {axios} = useAppContext();
   const deleteBlog = async () => {
-    toast.error('You can not delete this blog in view mode only');
+    toast.error('🔒 View Mode Enabled — Actions are disabled for safety & demo purposes.');
     return;
       const confirm = window.confirm('Arye you sure you want delete this blog');
       if(!confirm) return;
@@ -30,7 +30,7 @@ const BlogTableItem = ({blog,fetchBlogs,index}) => {
 
 const togglePublish = async() => {
   try { 
-    toast.error(`You can not ${blog.isPublished?'Unpublish':'Publish'} this blog in view mode only`); 
+    toast.error(`🔒 View Mode Enabled — Actions are disabled for safety & demo purposes.`); 
     return;
   const {data} = await axios.post('/api/blog/toggle-publish',{id:blog._id});
   if(data.success){

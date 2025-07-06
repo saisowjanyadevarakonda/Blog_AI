@@ -23,9 +23,10 @@ import {parse} from 'marked'
 
         const onSubmitHandler = async (e) => {
           try {
-            toast.error('You can not post this Blog in view Mode only');
+            e.preventDefault();
+            toast('🔒 View Mode Enabled — Actions are disabled for safety & demo purposes.',{duration:2000});
             return;
-           e.preventDefault();
+           
            setIsAdding(true)
            
            const blog = {
@@ -135,8 +136,11 @@ import {parse} from 'marked'
 <br />
 <button disabled={isAdding} type='submit' className='mt-8 w-40 h-10 bg-primary text-white rounded cursor-pointer text-sm'>
     {isAdding? 'Adding....':'Add Blog'}
-</button>
+          </button>
 
+<p className="text-red-600 mt-4 font-semibold text-sm  mb-4">
+  🔒 You cannot add a blog in demo mode for safety purposes.
+</p>
             </div>
         </form>
     );
